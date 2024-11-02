@@ -6,5 +6,7 @@
 <body>
     <h2>Welcome, <%= request.getSession().getAttribute("username") %>!</h2>
     <a href="logout.jsp">Logout</a>
+    <br>
+    <a href="adminbookCRUD.jsp">manage books</a>
 </body>
 </html>

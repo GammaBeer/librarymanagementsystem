@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h2, h3 {
+    color: #333;
+}
+
+.book-grid {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.book-grid th, .book-grid td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.book-grid th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+form {
+    margin: 20px 0;
+}
+
+label {
+    display: inline-block;
+    width: 100px;
+}
+
+input, button {
+    margin: 5px 0;
+    padding: 5px;
+}

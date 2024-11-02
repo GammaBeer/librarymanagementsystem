@@ -5,6 +5,6 @@
 </head>
 <body>
     <h2>Welcome, <%= request.getSession().getAttribute("email") %>!</h2>
-    <a href="stundetlogout.jsp">Logout</a>
+    <a href="logout.jsp">Logout</a>
 </body>
 </html>
