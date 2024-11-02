@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" href="welcome.css">
 </head>
 <body>
     <h2>Welcome, <%= request.getSession().getAttribute("username") %>!</h2>
