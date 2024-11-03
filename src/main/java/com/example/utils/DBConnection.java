@@ -8,5 +8,6 @@ public class DBConnection {
     private static final String PASSWORD = "mysql"; // replace with your DB password
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
+
     }
 }
