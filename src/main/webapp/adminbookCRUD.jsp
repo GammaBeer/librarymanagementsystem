@@ -6,6 +6,16 @@
 <head>
     <title>Library Books</title>
     <link rel="stylesheet" type="text/css" href="adminbookCRUD.css"> <!-- External CSS -->
+    <script>
+                // Check if the user is authenticated
+                window.onload = function() {
+                    const token = localStorage.getItem("admintoken");
+                    if (!token) {
+                        // Redirect to login page if token is missing
+                        window.location.href = "login.jsp";
+                    }
+                };
+            </script>
 </head>
 <body>
     <h2>Library Books</h2>

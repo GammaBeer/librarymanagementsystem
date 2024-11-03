@@ -3,6 +3,16 @@
 <head>
     <title>Welcome</title>
     <link rel="stylesheet" type="text/css" href="welcome.css">
+    <script>
+            // Check if the user is authenticated
+            window.onload = function() {
+                const token = localStorage.getItem("admintoken");
+                if (!token) {
+                    // Redirect to login page if token is missing
+                    window.location.href = "login.jsp";
+                }
+            };
+        </script>
 </head>
 <body>
     <h2>Welcome, <%= request.getSession().getAttribute("username") %>!</h2>
