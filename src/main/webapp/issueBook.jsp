@@ -1,5 +1,14 @@
 <%@ page import="java.sql.Connection, java.sql.DriverManager, java.sql.PreparedStatement, java.sql.ResultSet, java.sql.SQLException, javax.servlet.http.HttpSession" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%
+    // Move selectedBranch definition here so it’s available globally
+    String selectedBranch = request.getParameter("branch");
+    if (selectedBranch == null) {
+        selectedBranch = ""; // Default to an empty string if no branch selected
+    }
+%>
+
 <html>
 <head>
     <title>Issue a Book</title>
@@ -11,21 +20,19 @@
             <label for="branch-select">Select Branch:</label>
             <select id="branch-select" name="branch" onchange="branchSelected()">
                 <option value="">Choose a branch...</option>
-                <option value="CSE">CSE</option>
-                <option value="EE">EE</option>
-                <option value="ECE">ECE</option>
-                <option value="ME">ME</option>
-                <option value="AE">AE</option>
+                <option value="CSE" <%= "CSE".equals(selectedBranch) ? "selected" : "" %>>CSE</option>
+                <option value="EE" <%= "EE".equals(selectedBranch) ? "selected" : "" %>>EE</option>
+                <option value="ECE" <%= "ECE".equals(selectedBranch) ? "selected" : "" %>>ECE</option>
+                <option value="ME" <%= "ME".equals(selectedBranch) ? "selected" : "" %>>ME</option>
+                <option value="AE" <%= "AE".equals(selectedBranch) ? "selected" : "" %>>AE</option>
             </select>
         </form>
     </div>
 
     <div class="branch-info">
         <%
-            String studentEmail = "hey@hey.com";
-            String selectedBranch = request.getParameter("branch");
-
-            if (selectedBranch != null && !selectedBranch.isEmpty()) {
+            String studentEmail = "hey@hey.com";  // Example student email
+            if (!selectedBranch.isEmpty()) {
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "1234");
@@ -52,16 +59,27 @@
                         out.println("<td>" + quantity + "</td>");
                         out.println("<td>" + rs.getString("section") + "</td>");
 
-                        if (quantity > 0) {
+                        // Check if the student has already issued the book
+                        String checkQuery = "SELECT COUNT(*) AS issuedCount FROM issued_books WHERE book_id = ? AND student_email = ?";
+                        PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
+                        checkStmt.setInt(1, bookId);
+                        checkStmt.setString(2, studentEmail);
+                        ResultSet checkRs = checkStmt.executeQuery();
+
+                        if (checkRs.next() && checkRs.getInt("issuedCount") > 0) {
+                            out.println("<td>Issued</td>");
+                        } else if (quantity > 0) {
                             out.println("<td><form method='post' action='issueBook.jsp'>");
                             out.println("<input type='hidden' name='bookId' value='" + bookId + "'>");
                             out.println("<input type='hidden' name='action' value='issue'>");
+                            out.println("<input type='hidden' name='branch' value='" + selectedBranch + "'>");
                             out.println("<button type='submit'>Issue</button>");
                             out.println("</form></td>");
                         } else {
                             out.println("<td>Issued</td>");
                         }
 
+                        checkStmt.close();
                         out.println("</tr>");
                     }
 
