@@ -14,6 +14,7 @@ public class DBConnection {
             throw new SQLException("MySQL Driver not found");
         }
         return DriverManager.getConnection(URL, USER, PASSWORD);
+
     }
 
 }
