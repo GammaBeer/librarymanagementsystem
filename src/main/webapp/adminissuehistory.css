@@ -1,0 +1,34 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Combine borders of adjacent cells */
+    margin: 20px 0; /* Space above and below the table */
+}
+
+th, td {
+    padding: 12px; /* Space inside cells */
+    text-align: left; /* Align text to the left */
+    border: 1px solid #dddddd; /* Light gray border */
+}
+
+th {
+    background-color: #f2f2f2; /* Light gray background for header */
+    color: #333; /* Darker text color for the header */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Alternate row colors for better readability */
+}
+
+tr:hover {
+    background-color: #f1f1f1; /* Change background on hover */
+}
