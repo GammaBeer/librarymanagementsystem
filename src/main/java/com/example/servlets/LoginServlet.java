@@ -17,8 +17,10 @@ public class LoginServlet extends HttpServlet {
         System.out.println(username);
         System.out.println(password);
         try (Connection conn = DBConnection.getConnection()) {
+//            System.out.println("before");
             String sql = "SELECT * FROM admins WHERE username = ? AND password = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
+//            System.out.println("after");
             stmt.setString(1, username);
             stmt.setString(2, password);
 
