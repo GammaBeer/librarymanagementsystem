@@ -1,4 +1,5 @@
-<%@ page import="java.sql.Connection, java.sql.DriverManager, java.sql.PreparedStatement, java.sql.ResultSet, java.sql.SQLException" %>
+<%@ page import="com.example.utils.DBConnection" %>
+<%@ page import="java.sql.Connection, java.sql.PreparedStatement, java.sql.ResultSet, java.sql.SQLException" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -49,53 +50,37 @@
         String studentEmail = "hey@hey.com";
 
         if (studentEmail != null) {
-            Connection conn = null;
-            PreparedStatement stmt = null;
-            ResultSet rs = null;
+            try (Connection conn = DBConnection.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement("SELECT book_id, book_name, issue_date FROM issued_books WHERE student_email = ?")) {
 
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "1234");
-
-                String query = "SELECT book_id, book_name, issue_date FROM issued_books WHERE student_email = ?";
-                stmt = conn.prepareStatement(query);
                 stmt.setString(1, studentEmail);
-                rs = stmt.executeQuery();
+                try (ResultSet rs = stmt.executeQuery()) {
+                    out.println("<table class='book-grid'>");
+                    out.println("<tr><th>Book ID</th><th>Book Name</th><th>Issue Date</th></tr>");
 
-                out.println("<table class='book-grid'>");
-                out.println("<tr><th>Book ID</th><th>Book Name</th><th>Issue Date</th></tr>");
+                    boolean hasIssuedBooks = false;
+                    while (rs.next()) {
+                        hasIssuedBooks = true;
+                        int bookId = rs.getInt("book_id");
+                        String bookName = rs.getString("book_name");
+                        String issueDate = rs.getString("issue_date");
 
-                boolean hasIssuedBooks = false;
-                while (rs.next()) {
-                    hasIssuedBooks = true;
-                    int bookId = rs.getInt("book_id");
-                    String bookName = rs.getString("book_name");
-                    String issueDate = rs.getString("issue_date");
+                        out.println("<tr>");
+                        out.println("<td>" + bookId + "</td>");
+                        out.println("<td>" + bookName + "</td>");
+                        out.println("<td>" + issueDate + "</td>");
+                        out.println("</tr>");
+                    }
 
-                    out.println("<tr>");
-                    out.println("<td>" + bookId + "</td>");
-                    out.println("<td>" + bookName + "</td>");
-                    out.println("<td>" + issueDate + "</td>");
-                    out.println("</tr>");
+                    out.println("</table>");
+
+                    if (!hasIssuedBooks) {
+                        out.println("<p class='no-books-message'>No books have been issued by you.</p>");
+                    }
                 }
-
-                out.println("</table>");
-
-                if (!hasIssuedBooks) {
-                    out.println("<p class='no-books-message'>No books have been issued by you.</p>");
-                }
-
-            } catch (ClassNotFoundException | SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
                 out.println("<p>Error: " + e.getMessage() + "</p>");
-            } finally {
-                try {
-                    if (rs != null) rs.close();
-                    if (stmt != null) stmt.close();
-                    if (conn != null) conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
             }
         } else {
             out.println("<p>Please log in to view your issued books.</p>");

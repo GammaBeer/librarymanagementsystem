@@ -1,11 +1,11 @@
-<%@ page import="java.sql.Connection, java.sql.DriverManager, java.sql.PreparedStatement, java.sql.ResultSet, java.sql.SQLException, javax.servlet.http.HttpSession" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.example.utils.DBConnection" %>
+<%@ page import="java.sql.Connection, java.sql.PreparedStatement, java.sql.ResultSet, java.sql.SQLException, javax.servlet.http.HttpSession" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <%
-    // Move selectedBranch definition here so it’s available globally
     String selectedBranch = request.getParameter("branch");
     if (selectedBranch == null) {
-        selectedBranch = ""; // Default to an empty string if no branch selected
+        selectedBranch = "";
     }
 %>
 
@@ -31,62 +31,54 @@
 
     <div class="branch-info">
         <%
-            String studentEmail = "hey@hey.com";  // Example student email
+            String studentEmail = "hey@hey.com"; // Example student email
             if (!selectedBranch.isEmpty()) {
-                try {
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "1234");
-
+                try (Connection conn = DBConnection.getConnection()) {
                     String query = "SELECT * FROM librarybooks WHERE section = ?";
-                    PreparedStatement stmt = conn.prepareStatement(query);
-                    stmt.setString(1, selectedBranch);
-                    ResultSet rs = stmt.executeQuery();
+                    try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                        stmt.setString(1, selectedBranch);
+                        try (ResultSet rs = stmt.executeQuery()) {
+                            out.println("<table class='book-grid'>");
+                            out.println("<caption>Books in " + selectedBranch + " Section</caption>");
+                            out.println("<tr><th>Book ID</th><th>Book Name</th><th>Author</th><th>Quantity</th><th>Section</th><th>Action</th></tr>");
 
-                    out.println("<table class='book-grid'>");
-                    out.println("<caption>Books in " + selectedBranch + " Section</caption>");
-                    out.println("<tr><th>Book ID</th><th>Book Name</th><th>Author</th><th>Quantity</th><th>Section</th><th>Action</th></tr>");
+                            while (rs.next()) {
+                                int bookId = rs.getInt("book_id");
+                                String bookName = rs.getString("book_name");
+                                String author = rs.getString("author");
+                                int quantity = rs.getInt("quantity");
 
-                    while (rs.next()) {
-                        int bookId = rs.getInt("book_id");
-                        String bookName = rs.getString("book_name");
-                        String author = rs.getString("author");
-                        int quantity = rs.getInt("quantity");
+                                out.println("<tr>");
+                                out.println("<td>" + bookId + "</td>");
+                                out.println("<td>" + bookName + "</td>");
+                                out.println("<td>" + author + "</td>");
+                                out.println("<td>" + quantity + "</td>");
+                                out.println("<td>" + rs.getString("section") + "</td>");
 
-                        out.println("<tr>");
-                        out.println("<td>" + bookId + "</td>");
-                        out.println("<td>" + bookName + "</td>");
-                        out.println("<td>" + author + "</td>");
-                        out.println("<td>" + quantity + "</td>");
-                        out.println("<td>" + rs.getString("section") + "</td>");
-
-                        // Check if the student has already issued the book
-                        String checkQuery = "SELECT COUNT(*) AS issuedCount FROM issued_books WHERE book_id = ? AND student_email = ?";
-                        PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
-                        checkStmt.setInt(1, bookId);
-                        checkStmt.setString(2, studentEmail);
-                        ResultSet checkRs = checkStmt.executeQuery();
-
-                        if (checkRs.next() && checkRs.getInt("issuedCount") > 0) {
-                            out.println("<td>Issued</td>");
-                        } else if (quantity > 0) {
-                            out.println("<td><form method='post' action='issueBook.jsp'>");
-                            out.println("<input type='hidden' name='bookId' value='" + bookId + "'>");
-                            out.println("<input type='hidden' name='action' value='issue'>");
-                            out.println("<input type='hidden' name='branch' value='" + selectedBranch + "'>");
-                            out.println("<button type='submit'>Issue</button>");
-                            out.println("</form></td>");
-                        } else {
-                            out.println("<td>Issued</td>");
+                                String checkQuery = "SELECT COUNT(*) AS issuedCount FROM issued_books WHERE book_id = ? AND student_email = ?";
+                                try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
+                                    checkStmt.setInt(1, bookId);
+                                    checkStmt.setString(2, studentEmail);
+                                    try (ResultSet checkRs = checkStmt.executeQuery()) {
+                                        if (checkRs.next() && checkRs.getInt("issuedCount") > 0) {
+                                            out.println("<td>Issued</td>");
+                                        } else if (quantity > 0) {
+                                            out.println("<td><form method='post' action='issueBook.jsp'>");
+                                            out.println("<input type='hidden' name='bookId' value='" + bookId + "'>");
+                                            out.println("<input type='hidden' name='action' value='issue'>");
+                                            out.println("<input type='hidden' name='branch' value='" + selectedBranch + "'>");
+                                            out.println("<button type='submit'>Issue</button>");
+                                            out.println("</form></td>");
+                                        } else {
+                                            out.println("<td>Issued</td>");
+                                        }
+                                    }
+                                }
+                                out.println("</tr>");
+                            }
+                            out.println("</table>");
                         }
-
-                        checkStmt.close();
-                        out.println("</tr>");
                     }
-
-                    out.println("</table>");
-                    rs.close();
-                    stmt.close();
-                    conn.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                     out.println("Database error: " + e.getMessage());
@@ -103,42 +95,36 @@
 
         if ("issue".equals(action) && bookIdParam != null) {
             int bookId = Integer.parseInt(bookIdParam);
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "1234");
-
+            try (Connection conn = DBConnection.getConnection()) {
                 String updateQuery = "UPDATE librarybooks SET quantity = quantity - 1 WHERE book_id = ?";
-                PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-                updateStmt.setInt(1, bookId);
-                int rowsUpdated = updateStmt.executeUpdate();
+                try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+                    updateStmt.setInt(1, bookId);
+                    int rowsUpdated = updateStmt.executeUpdate();
 
-                if (rowsUpdated > 0) {
-                    String bookNameQuery = "SELECT book_name FROM librarybooks WHERE book_id = ?";
-                    PreparedStatement nameStmt = conn.prepareStatement(bookNameQuery);
-                    nameStmt.setInt(1, bookId);
-                    ResultSet nameRs = nameStmt.executeQuery();
+                    if (rowsUpdated > 0) {
+                        String bookNameQuery = "SELECT book_name FROM librarybooks WHERE book_id = ?";
+                        try (PreparedStatement nameStmt = conn.prepareStatement(bookNameQuery)) {
+                            nameStmt.setInt(1, bookId);
+                            try (ResultSet nameRs = nameStmt.executeQuery()) {
+                                if (nameRs.next()) {
+                                    String bookName = nameRs.getString("book_name");
 
-                    if (nameRs.next()) {
-                        String bookName = nameRs.getString("book_name");
-
-                        String insertQuery = "INSERT INTO issued_books (book_id, student_email, issue_date, book_name) VALUES (?, ?, NOW(), ?)";
-                        PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
-                        insertStmt.setInt(1, bookId);
-                        insertStmt.setString(2, studentEmail);
-                        insertStmt.setString(3, bookName);
-                        insertStmt.executeUpdate();
-                        insertStmt.close();
+                                    String insertQuery = "INSERT INTO issued_books (book_id, student_email, issue_date, book_name) VALUES (?, ?, NOW(), ?)";
+                                    try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
+                                        insertStmt.setInt(1, bookId);
+                                        insertStmt.setString(2, studentEmail);
+                                        insertStmt.setString(3, bookName);
+                                        insertStmt.executeUpdate();
+                                    }
+                                }
+                            }
+                        }
                     }
-                    nameStmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    out.println("Error issuing the book: " + e.getMessage());
                 }
-
-                updateStmt.close();
-                conn.close();
-
                 response.sendRedirect("issueBook.jsp?branch=" + selectedBranch);
-            } catch (Exception e) {
-                e.printStackTrace();
-                out.println("Error issuing the book: " + e.getMessage());
             }
         }
     %>
