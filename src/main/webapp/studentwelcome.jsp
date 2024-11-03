@@ -5,6 +5,10 @@
 </head>
 <body>
     <h2>Welcome, <%= request.getSession().getAttribute("email") %>!</h2>
-    <a href="logout.jsp">Logout</a>
+    <ul>
+        <li><a href="issueBook.jsp">Issue a Book</a></li>
+        <li><a href="booksIssuedByAStudent.jsp">books Issued by you</a></li>
+        <li><a href="logout.jsp">Logout</a></li>
+    </ul>
 </body>
 </html>

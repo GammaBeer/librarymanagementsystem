@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.dropdown-container {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+label {
+    font-size: 1.2em;
+    color: #333;
+}
+
+select {
+    padding: 8px 12px;
+    font-size: 1em;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    outline: none;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+select:hover {
+    border-color: #007bff;
+}
+
+.branch-info {
+    font-size: 1.1em;
+    color: #555;
+    text-align: center;
+}
+
+.book-grid {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.book-grid caption {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+}
+
+.book-grid th, .book-grid td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.book-grid th {
+    background-color: #333;
+    color: white;
+}
+
+.book-grid tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.book-grid tr:hover {
+    background-color: #e0e0e0;
+}

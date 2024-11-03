@@ -8,6 +8,7 @@
     <h2>Welcome, <%= request.getSession().getAttribute("username") %>!</h2>
     <a href="logout.jsp">Logout</a>
     <br>
+    <a href="BookServlet">manage books</a>
     <!-- Link to trigger BookServlet when clicking "manage books" -->
     <a href="BookServlet">Manage Books</a>
     <a href="bookissue.jsp">Book Issue</a>
