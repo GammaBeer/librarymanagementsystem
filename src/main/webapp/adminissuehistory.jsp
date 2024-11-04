@@ -5,6 +5,16 @@
 <head>
     <title>Book Issue History</title>
     <link rel="stylesheet" type="text/css" href="adminissuehistory.css">
+    <script>
+            // Check if the user is authenticated
+            window.onload = function() {
+                const token = localStorage.getItem("admintoken");
+                if (!token) {
+                    // Redirect to login page if token is missing
+                    window.location.href = "login.jsp";
+                }
+            };
+        </script>
 </head>
 <body>
     <h1>Book Issue History</h1>

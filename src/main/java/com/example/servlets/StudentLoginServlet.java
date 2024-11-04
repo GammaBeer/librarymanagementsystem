@@ -15,8 +15,7 @@ public class StudentLoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        System.out.println(email);
-        System.out.println(password);
+
         try (Connection conn = DBConnection.getConnection()) {
             String sql = "SELECT * FROM studentslogin WHERE email = ? AND password = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -25,8 +24,9 @@ public class StudentLoginServlet extends HttpServlet {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                // Successful login
-                request.getSession().setAttribute("email", email);
+                // Successful login, set email in HttpSession
+                HttpSession session = request.getSession();
+                session.setAttribute("studentEmail", email);
                 response.sendRedirect("studentwelcome.jsp");
             } else {
                 // Failed login
