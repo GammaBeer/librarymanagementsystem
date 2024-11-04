@@ -204,23 +204,30 @@
         </form>
     </div>
 
-    <!-- Update Book Section -->
-    <div id="updateBook" class="content" style="display: none;">
-        <h3>Update Book</h3>
-        <form action="BookServlet" method="post">
-            <input type="hidden" name="action" value="update">
-            <!-- Field to search for the book by ID -->
-            <label>Book ID:</label><input type="number" name="bookId" required><br>
+ <!-- Update Book Section -->
+ <div id="updateBook" class="content" style="display: none;">
+     <h3>Update Book</h3>
+     <form action="BookServlet" method="post">
+         <input type="hidden" name="action" value="update">
 
-            <!-- Fields to update book details -->
-            <label>New Book Name:</label><input type="text" name="newBookName"><br>
-            <label>New Author:</label><input type="text" name="newAuthor"><br>
-            <label>New Quantity:</label><input type="number" name="newQuantity"><br>
-            <label>New Section:</label><input type="text" name="newSection"><br>
+         <!-- Field to search for the book by name -->
+         <label>Current Book Name:</label>
+         <input type="text" name="bookName" required><br> <!-- This is where the user inputs the current book name -->
 
-            <button type="submit">Update Book</button>
-        </form>
-    </div>
+         <!-- Fields to update book details -->
+         <label>New Book Name:</label>
+         <input type="text" name="newBookName"><br>
+         <label>New Author:</label>
+         <input type="text" name="newAuthor"><br>
+         <label>New Quantity:</label>
+         <input type="number" name="newQuantity"><br>
+         <label>New Section:</label>
+         <input type="text" name="newSection"><br>
+
+         <button type="submit">Update Book</button>
+     </form>
+ </div>
+
 
     <!-- Delete Book Section -->
     <div id="deleteBook" class="content" style="display: none;">
@@ -232,3 +239,4 @@
         </form>
     </div>
 </body>
+</html>

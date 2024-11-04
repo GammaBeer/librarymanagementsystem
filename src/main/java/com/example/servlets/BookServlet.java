@@ -34,9 +34,12 @@ public class BookServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("here");
         String action = request.getParameter("action");
 
         try (Connection conn = DBConnection.getConnection()) {
+            System.out.println("In book servlet");
+            System.out.println(action);
             if ("add".equals(action)) {
                 // Add functionality (remains the same)
                 String bookName = request.getParameter("bookName");
@@ -53,10 +56,11 @@ public class BookServlet extends HttpServlet {
                 stmt.executeUpdate();
 
             } else if ("update".equals(action)) {
-                String bookIdStr = request.getParameter("bookId");
+                System.out.println("in working update");
+                String bookName = request.getParameter("bookName"); // Get the book name from the request
+                System.out.println(bookName);
 
-                if (bookIdStr != null && !bookIdStr.isEmpty()) {
-                    int bookId = Integer.parseInt(bookIdStr);
+                if (bookName != null && !bookName.isEmpty()) {
                     String newBookName = request.getParameter("newBookName");
                     String newAuthor = request.getParameter("newAuthor");
                     String newQuantityStr = request.getParameter("newQuantity");
@@ -93,8 +97,8 @@ public class BookServlet extends HttpServlet {
                     // Only proceed if we have fields to update
                     if (!updates.isEmpty()) {
                         sql.append(String.join(", ", updates));
-                        sql.append(" WHERE book_id = ?");
-                        parameters.add(bookId);
+                        sql.append(" WHERE book_name = ?"); // Update based on book name
+                        parameters.add(bookName);
 
                         System.out.println("Executing SQL: " + sql.toString()); // Debugging SQL
                         System.out.println("With Parameters: " + parameters);   // Debugging Parameters
@@ -106,11 +110,11 @@ public class BookServlet extends HttpServlet {
                         int rowsUpdated = stmt.executeUpdate();
                         System.out.println("Rows updated: " + rowsUpdated);
                     } else {
-                        System.out.println("No fields to update for book_id: " + bookId);
+                        System.out.println("No fields to update for book_name: " + bookName);
                     }
                 }
-
-            } else if ("delete".equals(action)) {
+            }
+            else if ("delete".equals(action)) {
                 // Delete functionality (remains the same)
                 String searchBookName = request.getParameter("searchBookName");
 
