@@ -1,14 +1,15 @@
 <%@ page import="com.example.utils.DBConnection" %>
 <%@ page import="java.sql.Connection, java.sql.PreparedStatement, java.sql.ResultSet, java.sql.SQLException" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <%
-    // Retrieve the student email from the existing HttpSession (implicit 'session' object)
+    // Use the implicit session object directly
     String studentEmail = (session != null) ? (String) session.getAttribute("studentEmail") : null;
+
     if (studentEmail == null) {
-        // Redirect to login if not logged in
         response.sendRedirect("studentlogin.jsp");
-        return;
+        return; // Ensures that code below is not executed if redirected
     }
 
     String selectedBranch = request.getParameter("branch");
@@ -17,19 +18,15 @@
     }
 %>
 
+
 <html>
 <head>
     <title>Issue a Book</title>
     <link rel="stylesheet" href="issueBook.css">
-    <script>
-        function branchSelected() {
-            document.getElementById("branchForm").submit();  // Auto-submit form on selection
-        }
-    </script>
 </head>
 <body>
     <div class="dropdown-container">
-        <form method="get" action="issueBook.jsp" id="branchForm"> <!-- Changed method to GET -->
+        <form method="post" action="issueBook.jsp" id="branchForm">
             <label for="branch-select">Select Branch:</label>
             <select id="branch-select" name="branch" onchange="branchSelected()">
                 <option value="">Choose a branch...</option>
@@ -61,6 +58,7 @@
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                out.println("<p class='error-message'>Error fetching student information: " + e.getMessage() + "</p>");
             }
 
             if (!selectedBranch.isEmpty()) {
@@ -94,8 +92,10 @@
 
                                     try (ResultSet checkRs = checkStmt.executeQuery()) {
                                         if (checkRs.next() && checkRs.getInt("issuedCount") > 0) {
+                                            // Book is already issued
                                             out.println("<td>Issued</td>");
                                         } else if (quantity > 0) {
+                                            // Book is available to issue
                                             out.println("<td><form method='post' action='issueBook.jsp'>");
                                             out.println("<input type='hidden' name='bookId' value='" + bookId + "'>");
                                             out.println("<input type='hidden' name='bookName' value='" + bookName + "'>");
@@ -104,6 +104,7 @@
                                             out.println("<button type='submit'>Issue</button>");
                                             out.println("</form></td>");
                                         } else {
+                                            // Book is out of stock
                                             out.println("<td>Out of Stock</td>");
                                         }
                                     }
@@ -115,12 +116,54 @@
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    out.println("Database error: " + e.getMessage());
+                    out.println("<p class='error-message'>Database error: " + e.getMessage() + "</p>");
                 }
             } else {
                 out.println("<p>Please select a branch from the dropdown.</p>");
             }
         %>
     </div>
+
+    <%
+        String action = request.getParameter("action");
+        String bookIdParam = request.getParameter("bookId");
+        String bookNameParam = request.getParameter("bookName");
+
+        if ("issue".equals(action) && bookIdParam != null) {
+            int bookId = Integer.parseInt(bookIdParam);
+            try (Connection conn = DBConnection.getConnection()) {
+                // Update book quantity
+                String updateQuery = "UPDATE librarybooks SET quantity = quantity - 1 WHERE book_id = ?";
+                try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+                    updateStmt.setInt(1, bookId);
+                    int rowsUpdated = updateStmt.executeUpdate();
+
+                    if (rowsUpdated > 0) {
+                        // Insert issue record into admincurrentbookissue
+                        String insertQuery = "INSERT INTO admincurrentbookissue (book_id, book_name, student_id, student_name, issue_date, days_remaining, fine, status) VALUES (?, ?, ?, ?, NOW(), ?, 0, 'Pending')";
+                        try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
+                            insertStmt.setInt(1, bookId);
+                            insertStmt.setString(2, bookNameParam);
+                            insertStmt.setString(3, studentId);
+                            insertStmt.setString(4, studentName);
+                            insertStmt.setInt(5, 20); // days_remaining is initially 20
+                            insertStmt.executeUpdate();
+                        }
+                        response.sendRedirect("issueBook.jsp?branch=" + selectedBranch);
+                        return;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    out.println("<p class='error-message'>Error issuing the book: " + e.getMessage() + "</p>");
+                }
+            }
+        }
+    %>
+
+    <script>
+        function branchSelected() {
+            document.getElementById("branchForm").submit();
+        }
+    </script>
 </body>
 </html>

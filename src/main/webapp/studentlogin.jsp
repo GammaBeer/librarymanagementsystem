@@ -96,7 +96,7 @@
 <body>
     <div class="login-container">
         <h2>Student Login Page</h2>
-        <form id="loginForm" action="studentlogin" method="post">
+        <form id="loginForm" action="studentlogin" method="post" onsubmit="storeEmail()">
             <label for="email">Email:</label>
             <input type="text" name="email" id="email" placeholder="Enter your email" required>
 
@@ -114,5 +114,6 @@
             <p class="error-message"><%= error %></p>
         <% } %>
     </div>
+
 </body>
 </html>

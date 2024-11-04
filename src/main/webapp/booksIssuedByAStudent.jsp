@@ -1,6 +1,5 @@
 <%@ page import="com.example.utils.DBConnection" %>
 <%@ page import="java.sql.Connection, java.sql.PreparedStatement, java.sql.ResultSet, java.sql.SQLException" %>
-<%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -48,10 +47,8 @@
     <h1>Books Issued by You</h1>
 
     <%
-        // Ensure no duplicate declaration of the session variable
-        HttpSession session = request.getSession(false);
         String studentEmail = (session != null) ? (String) session.getAttribute("studentEmail") : null;
-        String studentEmail = (session != null) ? (String) session.getAttribute("studentEmail") : null;
+        String studentName = (session != null) ? (String) session.getAttribute("studentName") : null;
         String studentId = null;
 
         if (studentEmail != null) {

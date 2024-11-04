@@ -24,7 +24,7 @@ public class StudentLoginServlet extends HttpServlet {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                // Successful login, set email in HttpSession
+                // Successful login
                 HttpSession session = request.getSession();
                 session.setAttribute("studentEmail", email);
                 response.sendRedirect("studentwelcome.jsp");
