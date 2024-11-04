@@ -11,68 +11,6 @@ body {
     font-family: Arial, sans-serif; /* Modern font */
 }
 
-/* Navbar styling */
-.navbar {
-    background-color: #000; /* Black for navbar */
-    padding: 10px 20px; /* Padding for the navbar */
-    width: 100%; /* Full width */
-    display: flex; /* Flexbox for horizontal layout */
-    justify-content: space-around; /* Space items evenly */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
-}
-
-.navbar a {
-    text-decoration: none; /* Remove underline */
-    color: #e0e0e0; /* Light gray text color for links */
-    font-weight: bold; /* Bold text */
-    padding: 10px 20px; /* Padding around links */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
-    font-size: 16px; /* Increase font size */
-}
-
-.navbar a:hover {
-    background-color: #333; /* Darker gray on hover */
-    transform: translateY(-2px); /* Slight lift effect */
-}
-/* Navbar styling */
-.navbar {
-    background: linear-gradient(90deg, #2c3e50, #4ca1af); /* Gradient background */
-    padding: 15px 30px; /* Increased padding for a larger navbar */
-    width: 100%; /* Full width */
-    display: flex; /* Flexbox for horizontal layout */
-    justify-content: space-between; /* Space items evenly */
-    align-items: center; /* Center items vertically */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Deeper shadow for depth */
-}
-
-.navbar a {
-    text-decoration: none; /* Remove underline */
-    color: #ffffff; /* White text color for links */
-    font-weight: 600; /* Semi-bold text */
-    padding: 10px 20px; /* Padding around links */
-    border-radius: 30px; /* Rounded corners for buttons */
-    transition: background-color 0.3s, transform 0.2s, color 0.3s; /* Smooth transitions */
-    font-size: 18px; /* Increased font size */
-}
-
-.navbar a:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* Slightly lighter on hover */
-    color: #f39c12; /* Change text color on hover */
-    transform: translateY(-3px); /* Slight lift effect */
-}
-
-/* Responsive behavior for smaller screens */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column; /* Stack links vertically on small screens */
-        align-items: center; /* Center items horizontally */
-    }
-
-    .navbar a {
-        margin: 5px 0; /* Space between links */
-    }
-}
 
 
 /* Content styling */

@@ -12,22 +12,22 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Background Gradient */
+        /* Background */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            background: #f0f2f5;
             color: #333;
         }
 
-        /* Container */
+        /* Container Styling */
         .welcome-container {
-            background: linear-gradient(135deg, #ffffff, #f3f4f6);
+            background: #ffffff;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
             max-width: 500px;
             width: 100%;
@@ -35,16 +35,16 @@
         }
 
         .welcome-container:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
         /* Welcome Title */
         .welcome-container h2 {
             font-size: 28px;
-            color: #007bff;
+            color: #444;
             margin-bottom: 20px;
-            text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
         }
 
         /* Navigation Links */
@@ -60,15 +60,17 @@
 
         .welcome-container ul li a {
             text-decoration: none;
-            color: #2575fc;
+            color: #555;
             font-size: 18px;
-            font-weight: bold;
-            transition: color 0.3s, transform 0.3s;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: color 0.2s, background-color 0.2s;
         }
 
         .welcome-container ul li a:hover {
-            color: #6a11cb;
-            transform: translateX(5px);
+            background-color: #ebeff5;
+            color: #333;
         }
 
         /* Logout Button */
@@ -76,9 +78,9 @@
             margin-top: 30px;
             padding: 12px 25px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             color: #fff;
-            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            background: #444;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -86,14 +88,10 @@
         }
 
         .logout-button:hover {
-            background: linear-gradient(135deg, #ff4b2b, #ff416c);
-            transform: translateY(-3px);
+            background: #555;
+            transform: translateY(-2px);
         }
     </style>
-<<<<<<< HEAD
-=======
-
->>>>>>> a58190198ea211e688ea79fbd80c101a16d9d537
 </head>
 <body>
     <div class="welcome-container">
