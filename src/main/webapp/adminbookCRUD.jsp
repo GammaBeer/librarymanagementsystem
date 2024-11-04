@@ -24,100 +24,123 @@
         }
     </script>
     <style>
-            /* Basic reset */
-            * {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
+                /* Basic reset */
+                * {
+                    box-sizing: border-box;
+                    margin: 0;
+                    padding: 0;
+                }
 
-            body {
-                background-color: white; /* Dark background for the body */
-                color: #black; /* Light text color */
-                font-family: Arial, sans-serif; /* Modern font */
-            }
+                body {
+                    background-color: white; /* Dark background for the body */
+                    color: #black; /* Light text color */
+                    font-family: Arial, sans-serif; /* Modern font */
+                }
+                h3 {
+                    text-align: center;
+                    margin-bottom: 8px;
+                }
+                /* Content styling */
+                .content {
+                    margin: 20px 0; /* Space around sections */
+                    width: 100%; /* Ensure content takes full width */
+                }
 
-            /* Content styling */
-            .content {
-                margin: 20px 0; /* Space around sections */
-                width: 100%; /* Ensure content takes full width */
-            }
+                /* Table styling */
+                .book-grid {
+                    width: 100%; /* Full width */
+                    border-collapse: collapse; /* Merge borders */
+                    margin-top: 20px; /* Space above the table */
+                }
 
-            /* Table styling */
-            .book-grid {
-                width: 100%; /* Full width */
-                border-collapse: collapse; /* Merge borders */
-                margin-top: 20px; /* Space above the table */
-            }
+                .book-grid th, .book-grid td {
+                    border: 1px solid #696969; /* Darker border for cells */
+                    padding: 12px; /* Cell padding */
+                    text-align: center; /* Center-align text in table */
+                }
 
-            .book-grid th, .book-grid td {
-                border: 1px solid #696969; /* Darker border for cells */
-                padding: 12px; /* Cell padding */
-                text-align: center; /* Center-align text in table */
-            }
+                .book-grid th {
+                    background-color: #978b8b; /* Header background color */
+                    color: #f5f5f5; /* Light text color */
+                    font-weight: bold; /* Bold header text */
+                }
 
-            .book-grid th {
-                background-color: #978b8b; /* Header background color */
-                color: #f5f5f5; /* Light text color */
-                font-weight: bold; /* Bold header text */
-            }
+                .book-grid tr:hover {
+                    background-color: #696969; /* Highlight row on hover */
+                }
 
+                /* Form styling */
+                form {
+                    margin: 20px 0;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    background-color: #f5f5f5; /* Light background for form */
+                    padding: 20px;
+                    border-radius: 10px; /* Rounded corners */
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+                    max-width: 400px; /* Limit the width */
+                    margin: 0 auto; /* Center the form */
+                }
 
+                label {
+                    display: block;
+                    margin-bottom: 10px;
+                    font-weight: bold;
+                }
 
-            .book-grid tr:hover {
-                background-color: #696969; /* Highlight row on hover */
-            }
+                input[type="text"], input[type="number"] {
+                    width: 100%;
+                    padding: 10px;
+                    margin-bottom: 20px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                }
 
-            /* Form styling */
-            form {
-                margin: 20px 0;
-            }
+                button {
+                    padding: 10px 20px;
+                    background-color: #1c1c1c; /* Dark background for button */
+                    color: #f5f5f5; /* Light text color */
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer; /* Pointer cursor for buttons */
+                    transition: background-color 0.3s; /* Smooth transition for button */
+                }
 
-            label {
-                display: inline-block;
-                width: 100px;
-            }
+                button:hover {
+                    background-color: #333; /* Darker background on hover */
+                }
 
+                /* Navbar styling */
+                .navbar {
+                    background-color: #1c1c1c; /* Background color for navbar */
+                    padding: 10px; /* Padding around navbar */
+                }
 
-            button {
-                cursor: pointer; /* Pointer cursor for buttons */
-                transition: background-color 0.3s; /* Smooth transition for button */
-            }
+                .navbar ul {
+                    list-style-type: none; /* Remove bullet points */
+                    padding: 0; /* Remove padding */
+                    display: flex; /* Display items in a row */
+                    justify-content: center; /* Center the items horizontally */
+                }
 
-            button:hover {
-                background-color: #555; /* Lighter gray on hover */
-            }
+                .navbar li {
+                    margin: 0 15px; /* Space between navbar items */
+                }
 
-            /* Navbar styling */
-            .navbar {
-                background-color: #1c1c1c; /* Background color for navbar */
-                padding: 10px; /* Padding around navbar */
-            }
+                .navbar a {
+                    color: #f5f5f5; /* Light text color for links */
+                    text-decoration: none; /* Remove underline */
+                    font-size: 18px; /* Font size for navbar links */
+                    padding: 10px 15px; /* Padding for clickable area */
+                    transition: background-color 0.3s; /* Smooth transition on hover */
+                }
 
-            .navbar ul {
-                list-style-type: none; /* Remove bullet points */
-                padding: 0; /* Remove padding */
-                display: flex; /* Display items in a row */
-                justify-content: center; /* Center the items horizontally */
-            }
-
-            .navbar li {
-                margin: 0 15px; /* Space between navbar items */
-            }
-
-            .navbar a {
-                color: #f5f5f5; /* Light text color for links */
-                text-decoration: none; /* Remove underline */
-                font-size: 18px; /* Font size for navbar links */
-                padding: 10px 15px; /* Padding for clickable area */
-                transition: background-color 0.3s; /* Smooth transition on hover */
-            }
-
-            .navbar a:hover {
-                background-color: #333; /* Darker background on hover */
-                border-radius: 5px; /* Rounded corners for hover effect */
-            }
-        </style>
+                .navbar a:hover {
+                    background-color: #333; /* Darker background on hover */
+                    border-radius: 5px; /* Rounded corners for hover effect */
+                }
+            </style>
     </head>
 </head>
 <body>
