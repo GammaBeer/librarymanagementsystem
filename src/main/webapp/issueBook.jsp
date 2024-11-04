@@ -1,6 +1,8 @@
 <%@ page import="com.example.utils.DBConnection" %>
 <%@ page import="java.sql.Connection, java.sql.PreparedStatement, java.sql.ResultSet, java.sql.SQLException" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <%
@@ -16,8 +18,22 @@
     if (selectedBranch == null) {
         selectedBranch = "";
     }
-%>
 
+    // Fetch distinct branches from the librarybooks table
+    List<String> sections = new ArrayList<>();
+    try (Connection conn = DBConnection.getConnection()) {
+        String sectionQuery = "SELECT DISTINCT section FROM librarybooks";
+        try (PreparedStatement sectionStmt = conn.prepareStatement(sectionQuery);
+             ResultSet sectionRs = sectionStmt.executeQuery()) {
+            while (sectionRs.next()) {
+                sections.add(sectionRs.getString("section"));
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        out.println("<p class='error-message'>Error fetching sections: " + e.getMessage() + "</p>");
+    }
+%>
 
 <html>
 <head>
@@ -30,11 +46,13 @@
             <label for="branch-select">Select Branch:</label>
             <select id="branch-select" name="branch" onchange="branchSelected()">
                 <option value="">Choose a branch...</option>
-                <option value="CSE" <%= "CSE".equals(selectedBranch) ? "selected" : "" %>>CSE</option>
-                <option value="EE" <%= "EE".equals(selectedBranch) ? "selected" : "" %>>EE</option>
-                <option value="ECE" <%= "ECE".equals(selectedBranch) ? "selected" : "" %>>ECE</option>
-                <option value="ME" <%= "ME".equals(selectedBranch) ? "selected" : "" %>>ME</option>
-                <option value="AE" <%= "AE".equals(selectedBranch) ? "selected" : "" %>>AE</option>
+                <%
+                    for (String section : sections) {
+                %>
+                <option value="<%= section %>" <%= section.equals(selectedBranch) ? "selected" : "" %>><%= section %></option>
+                <%
+                    }
+                %>
             </select>
         </form>
     </div>

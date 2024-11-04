@@ -90,27 +90,6 @@
             transform: translateY(-3px);
         }
     </style>
-    <script>
-        window.onload = function() {
-            // Retrieve the token from localStorage
-            const token = localStorage.getItem("studenttoken");
-
-            // Check if token is available
-            if (!token) {
-                // Redirect to login if no token is found
-                window.location.href = "login.jsp";
-            } else {
-                // Set the email in the session for display purposes
-                document.getElementById("emailDisplay").innerText = token;
-            }
-        };
-
-        function clearToken() {
-            // Clear token on logout
-            localStorage.removeItem("studenttoken");
-            window.location.href = "login.jsp";
-        }
-    </script>
 </head>
 <body>
     <div class="welcome-container">
