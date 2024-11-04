@@ -51,7 +51,7 @@
     </style>
 </head>
 <body>
-    <h2>Welcome to Student Management System!</h2>
+    <h2>Welcome to Library Management System!</h2>
     <a href="login.jsp">Admin Login</a>
     <a href="studentlogin.jsp">Student Login</a>
 </body>
