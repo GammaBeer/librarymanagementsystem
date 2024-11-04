@@ -1,28 +1,52 @@
+/* Basic reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    background-color: #121212; /* Dark background for the body */
+    color: #f5f5f5; /* Light text color */
+    font-family: Arial, sans-serif; /* Modern font */
 }
 
-h2, h3 {
-    color: #333;
+
+
+/* Content styling */
+.content {
+    margin: 20px 0; /* Space around sections */
+    width: 100%; /* Ensure content takes full width */
 }
 
+/* Table styling */
 .book-grid {
-    width: 100%;
-    border-collapse: collapse;
+    width: 100%; /* Full width */
+    border-collapse: collapse; /* Merge borders */
+    margin-top: 20px; /* Space above the table */
 }
 
 .book-grid th, .book-grid td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
+    border: 1px solid #555; /* Darker border for cells */
+    padding: 12px; /* Cell padding */
+    text-align: center; /* Center-align text in table */
 }
 
 .book-grid th {
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: #1c1c1c; /* Header background color */
+    color: #f5f5f5; /* Light text color */
+    font-weight: bold; /* Bold header text */
 }
 
+.book-grid tr:nth-child(even) {
+    background-color: #2a2a2a; /* Slightly lighter dark gray for even rows */
+}
+
+.book-grid tr:hover {
+    background-color: #444; /* Highlight row on hover */
+}
+
+/* Form styling */
 form {
     margin: 20px 0;
 }
@@ -34,5 +58,19 @@ label {
 
 input, button {
     margin: 5px 0;
-    padding: 5px;
+    padding: 10px; /* Increased padding */
+    border: 1px solid #555; /* Darker border for inputs and buttons */
+    background-color: #333; /* Dark background for inputs and buttons */
+    color: #f5f5f5; /* Light text color */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Consistent font size */
+}
+
+button {
+    cursor: pointer; /* Pointer cursor for buttons */
+    transition: background-color 0.3s; /* Smooth transition for button */
+}
+
+button:hover {
+    background-color: #555; /* Lighter gray on hover */
 }
