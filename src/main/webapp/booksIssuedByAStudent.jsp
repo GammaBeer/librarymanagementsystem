@@ -42,30 +42,13 @@
             font-size: 1.1em;
         }
     </style>
-    <script>
-            window.onload = function() {
-                // Retrieve the token from localStorage
-                const token = localStorage.getItem("studenttoken");
-
-                if (token) {
-                    // Set the email value based on the token
-                    document.getElementById("studentEmailField").value = token;
-                } else {
-                    // Redirect to login if no token is found
-                    window.location.href = "login.jsp";
-                }
-            };
-
-            function branchSelected() {
-                document.getElementById("branchForm").submit();
-            }
-        </script>
 </head>
 <body>
     <h1>Books Issued by You</h1>
 
     <%
-        String studentEmail = request.getParameter("studentEmail"); // Example email, fetch this from session in practice
+        String studentEmail = (session != null) ? (String) session.getAttribute("studentEmail") : null;
+        String studentName = (session != null) ? (String) session.getAttribute("studentName") : null;
         String studentId = null;
 
         if (studentEmail != null) {

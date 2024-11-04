@@ -1,36 +1,28 @@
 <%@ page import="com.example.utils.DBConnection" %>
 <%@ page import="java.sql.Connection, java.sql.PreparedStatement, java.sql.ResultSet, java.sql.SQLException" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <%
+    // Use the implicit session object directly
+    String studentEmail = (session != null) ? (String) session.getAttribute("studentEmail") : null;
+
+    if (studentEmail == null) {
+        response.sendRedirect("studentlogin.jsp");
+        return; // Ensures that code below is not executed if redirected
+    }
+
     String selectedBranch = request.getParameter("branch");
     if (selectedBranch == null) {
         selectedBranch = "";
     }
 %>
 
+
 <html>
 <head>
     <title>Issue a Book</title>
     <link rel="stylesheet" href="issueBook.css">
-    <script>
-            window.onload = function() {
-                // Retrieve the token from localStorage
-                const token = localStorage.getItem("studenttoken");
-
-                if (token) {
-                    // Set the email value based on the token
-                    document.getElementById("studentEmailField").value = token;
-                } else {
-                    // Redirect to login if no token is found
-                    window.location.href = "login.jsp";
-                }
-            };
-
-            function branchSelected() {
-                document.getElementById("branchForm").submit();
-            }
-        </script>
 </head>
 <body>
     <div class="dropdown-container">
@@ -49,7 +41,6 @@
 
     <div class="branch-info">
         <%
-            String studentEmail = request.getParameter("studentEmail"); // Example student email
             String studentId = "";
             String studentName = "";
 
@@ -67,6 +58,7 @@
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                out.println("<p class='error-message'>Error fetching student information: " + e.getMessage() + "</p>");
             }
 
             if (!selectedBranch.isEmpty()) {
@@ -96,7 +88,7 @@
                                 String checkQuery = "SELECT COUNT(*) AS issuedCount FROM admincurrentbookissue WHERE book_id = ? AND student_id = ?";
                                 try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
                                     checkStmt.setInt(1, bookId);
-                                    checkStmt.setString(2, studentId);  // Use studentId instead of studentEmail here
+                                    checkStmt.setString(2, studentId);
 
                                     try (ResultSet checkRs = checkStmt.executeQuery()) {
                                         if (checkRs.next() && checkRs.getInt("issuedCount") > 0) {
@@ -124,7 +116,7 @@
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    out.println("Database error: " + e.getMessage());
+                    out.println("<p class='error-message'>Database error: " + e.getMessage() + "</p>");
                 }
             } else {
                 out.println("<p>Please select a branch from the dropdown.</p>");
@@ -157,12 +149,13 @@
                             insertStmt.setInt(5, 20); // days_remaining is initially 20
                             insertStmt.executeUpdate();
                         }
+                        response.sendRedirect("issueBook.jsp?branch=" + selectedBranch);
+                        return;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    out.println("Error issuing the book: " + e.getMessage());
+                    out.println("<p class='error-message'>Error issuing the book: " + e.getMessage() + "</p>");
                 }
-                response.sendRedirect("issueBook.jsp?branch=" + selectedBranch);
             }
         }
     %>

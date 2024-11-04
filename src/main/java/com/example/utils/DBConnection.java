@@ -5,7 +5,7 @@ import java.sql.*;
 public class DBConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/library";
     private static final String USER = "root"; // replace with your DB username
-    private static final String PASSWORD = "Ojasvi@123"; // replace with your DB password
+    private static final String PASSWORD = "mysql"; // replace with your DB password
     public static Connection getConnection() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

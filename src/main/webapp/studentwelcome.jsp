@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <html>
 <head>
     <title>Welcome</title>
@@ -113,12 +114,23 @@
 </head>
 <body>
     <div class="welcome-container">
-        <h2>Welcome, <span id="emailDisplay"></span>!</h2>
+        <%
+            // Use the implicit session object directly
+            String studentEmail = (String) session.getAttribute("studentEmail");
+
+            if (studentEmail == null) {
+                response.sendRedirect("studentlogin.jsp");
+                return; // Ensure the rest of the code isn't executed if redirected
+            }
+        %>
+        <h2>Welcome, <%= studentEmail %>!</h2>
         <ul>
             <li><a href="issueBook.jsp">Issue a Book</a></li>
             <li><a href="booksIssuedByAStudent.jsp">Books Issued by You</a></li>
         </ul>
-        <button class="logout-button" onclick="clearToken()">Logout</button>
+        <form action="logout.jsp" method="post">
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
     </div>
 </body>
 </html>

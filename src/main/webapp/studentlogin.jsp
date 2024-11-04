@@ -115,13 +115,5 @@
         <% } %>
     </div>
 
-    <script>
-        function storeEmail() {
-            // Get the email value
-            const email = document.getElementById("email").value;
-            // Store it in localStorage
-            localStorage.setItem("studenttoken", email);
-        }
-    </script>
 </body>
 </html>
