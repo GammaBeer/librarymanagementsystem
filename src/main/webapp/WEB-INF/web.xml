@@ -28,4 +28,20 @@
         <servlet-name>BookServlet</servlet-name>
         <url-pattern>/BookServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>AdminIssueBookServlet</servlet-name>
+        <servlet-class>com.example.servlets.AdminIssueBookServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminIssueBookServlet</servlet-name>
+        <url-pattern>/AdminIssueBookServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AdminBookIssueServlet</servlet-name>
+        <servlet-class>com.example.servlets.AdminBookIssueServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminBookIssueServlet</servlet-name>
+        <url-pattern>/AdminBookIssueServlet</url-pattern>
+    </servlet-mapping>
 </web-app>

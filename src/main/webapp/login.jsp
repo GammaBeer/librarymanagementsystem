@@ -69,16 +69,18 @@
             padding: 12px;
             border: none;
             border-radius: 5px;
-            background-color: #007bff;
+            background-color: #000 ;
             color: white;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease;
-        }
+        border : 1px solid black ;}
 
         .login-container button:hover {
-            background-color: #0056b3;
+            background-color: #fff;
+            color : #000 ;
+
         }
 
         /* Error message styling */
@@ -86,6 +88,9 @@
             color: red;
             margin-top: 10px;
             font-size: 14px;
+        }
+        .button{
+
         }
     </style>
 </head>
