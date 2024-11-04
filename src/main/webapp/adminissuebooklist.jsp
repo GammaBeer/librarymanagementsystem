@@ -7,6 +7,16 @@
 <head>
     <title>Current Book Issues</title>
     <link rel="stylesheet" type="text/css" href="adminissuebooklist.css">
+    <script>
+            // Check if the user is authenticated
+            window.onload = function() {
+                const token = localStorage.getItem("admintoken");
+                if (!token) {
+                    // Redirect to login page if token is missing
+                    window.location.href = "login.jsp";
+                }
+            };
+        </script>
 </head>
 <body>
     <h1>Current Book Issues</h1>

@@ -13,6 +13,24 @@
 <head>
     <title>Issue a Book</title>
     <link rel="stylesheet" href="issueBook.css">
+    <script>
+            window.onload = function() {
+                // Retrieve the token from localStorage
+                const token = localStorage.getItem("studenttoken");
+
+                if (token) {
+                    // Set the email value based on the token
+                    document.getElementById("studentEmailField").value = token;
+                } else {
+                    // Redirect to login if no token is found
+                    window.location.href = "login.jsp";
+                }
+            };
+
+            function branchSelected() {
+                document.getElementById("branchForm").submit();
+            }
+        </script>
 </head>
 <body>
     <div class="dropdown-container">
@@ -31,7 +49,7 @@
 
     <div class="branch-info">
         <%
-            String studentEmail = "lakshay@gmail.com"; // Example student email
+            String studentEmail = request.getParameter("studentEmail"); // Example student email
             String studentId = "";
             String studentName = "";
 
