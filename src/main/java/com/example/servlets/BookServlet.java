@@ -34,10 +34,14 @@ public class BookServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("here");
         String action = request.getParameter("action");
 
         try (Connection conn = DBConnection.getConnection()) {
+            System.out.println("In book servlet");
+            System.out.println(action);
             if ("add".equals(action)) {
+                // Add functionality (remains the same)
                 String bookName = request.getParameter("bookName");
                 String author = request.getParameter("author");
                 int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -50,16 +54,68 @@ public class BookServlet extends HttpServlet {
                 stmt.setInt(3, quantity);
                 stmt.setString(4, section);
                 stmt.executeUpdate();
-            } else if ("update".equals(action)) {
-                String searchBookName = request.getParameter("searchBookName");
-                int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-                String sql = "UPDATE LIBRARYBOOKS SET quantity = ? WHERE book_name = ?";
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setInt(1, quantity);
-                stmt.setString(2, searchBookName);
-                stmt.executeUpdate();
-            } else if ("delete".equals(action)) {
+            } else if ("update".equals(action)) {
+                System.out.println("in working update");
+                String bookName = request.getParameter("bookName"); // Get the book name from the request
+                System.out.println(bookName);
+
+                if (bookName != null && !bookName.isEmpty()) {
+                    String newBookName = request.getParameter("newBookName");
+                    String newAuthor = request.getParameter("newAuthor");
+                    String newQuantityStr = request.getParameter("newQuantity");
+                    String newSection = request.getParameter("newSection");
+
+                    // Building the SQL update dynamically
+                    StringBuilder sql = new StringBuilder("UPDATE LIBRARYBOOKS SET ");
+                    ArrayList<String> updates = new ArrayList<>();
+                    ArrayList<Object> parameters = new ArrayList<>();
+
+                    if (newBookName != null && !newBookName.isEmpty()) {
+                        updates.add("book_name = ?");
+                        parameters.add(newBookName);
+                    }
+                    if (newAuthor != null && !newAuthor.isEmpty()) {
+                        updates.add("author = ?");
+                        parameters.add(newAuthor);
+                    }
+                    if (newQuantityStr != null && !newQuantityStr.isEmpty()) {
+                        try {
+                            int newQuantity = Integer.parseInt(newQuantityStr);
+                            updates.add("quantity = ?");
+                            parameters.add(newQuantity);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid quantity provided: " + newQuantityStr);
+                            // Log the error or handle invalid input if necessary
+                        }
+                    }
+                    if (newSection != null && !newSection.isEmpty()) {
+                        updates.add("section = ?");
+                        parameters.add(newSection);
+                    }
+
+                    // Only proceed if we have fields to update
+                    if (!updates.isEmpty()) {
+                        sql.append(String.join(", ", updates));
+                        sql.append(" WHERE book_name = ?"); // Update based on book name
+                        parameters.add(bookName);
+
+                        System.out.println("Executing SQL: " + sql.toString()); // Debugging SQL
+                        System.out.println("With Parameters: " + parameters);   // Debugging Parameters
+
+                        PreparedStatement stmt = conn.prepareStatement(sql.toString());
+                        for (int i = 0; i < parameters.size(); i++) {
+                            stmt.setObject(i + 1, parameters.get(i));
+                        }
+                        int rowsUpdated = stmt.executeUpdate();
+                        System.out.println("Rows updated: " + rowsUpdated);
+                    } else {
+                        System.out.println("No fields to update for book_name: " + bookName);
+                    }
+                }
+            }
+            else if ("delete".equals(action)) {
+                // Delete functionality (remains the same)
                 String searchBookName = request.getParameter("searchBookName");
 
                 String sql = "DELETE FROM LIBRARYBOOKS WHERE book_name = ?";
@@ -70,6 +126,8 @@ public class BookServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Redirect back to the view page after updating
         response.sendRedirect("BookServlet");
     }
+
 }
