@@ -62,6 +62,29 @@
         .link-container a:active {
             transform: scale(0.98);
         }
+.back {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    position: absolute;
+    top: 20px; /* Position it at the top */
+    left: 20px; /* Position it to the left */
+    color: white; /* Button text color */
+    background-color: black; /* Button background color */
+    padding: 10px 15px; /* Padding for a better look */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Slightly rounded corners */
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    border: 2px solid black;
+}
+
+.back:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+
     </style>
     <script>
         // Check if the user is authenticated
@@ -75,6 +98,7 @@
     </script>
 </head>
 <body>
+    <a class="back" href="welcome.jsp">back</a>
     <h1>Book Issue</h1>
     <div class="link-container">
         <a href="adminissuebook.jsp">Issue Book</a>

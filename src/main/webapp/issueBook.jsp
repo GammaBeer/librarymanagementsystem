@@ -137,6 +137,7 @@
     </script>
 </head>
 <body>
+
     <div class="navbar">
         <a href="studentwelcome.jsp" class="nav-link">Home</a>
         <a href="issueBook.jsp" class="nav-link">Issue Book</a>

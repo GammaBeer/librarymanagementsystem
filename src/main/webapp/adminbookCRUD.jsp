@@ -149,6 +149,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <ul>
+            <li><a href="welcome.jsp">Home</a></li>
             <li><a href="javascript:void(0);" onclick="showSection('viewBooks')">View All Books</a></li>
             <li><a href="javascript:void(0);" onclick="showSection('addBook')">Add a New Book</a></li>
             <li><a href="javascript:void(0);" onclick="showSection('updateBook')">Update Book</a></li>
@@ -210,8 +211,8 @@
         <h3>Update Book</h3>
         <form action="BookServlet" method="post">
             <input type="hidden" name="action" value="update">
-            <label>Book Name:</label><input type="text" name="searchBookName" required><br>
-            <label>New Quantity:</label><input type="number" name="quantity"><br>
+            <label>Book Name:</label><input type="text" name="bookName" required><br>
+            <label>New Quantity:</label><input type="number" name="newQuantity"><br>
             <button type="submit">Update Book</button>
         </form>
     </div>
